@@ -64,6 +64,28 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
 }
 
+/* 2-second blink animation for Buy now with 1-Click CTA */
+@keyframes oneClickBlink {
+  0%,
+  72%,
+  100% {
+    opacity: 1;
+  }
+  86% {
+    opacity: 0.18;
+  }
+}
+
+.one-click-blink {
+  animation: oneClickBlink 2s ease-in-out infinite;
+}
+
+.one-click-blink:hover,
+.one-click-blink:focus-visible {
+  animation-play-state: paused;
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
