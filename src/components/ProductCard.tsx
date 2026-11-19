@@ -20,6 +20,7 @@ interface ProductCardProps {
   onSelectColour: (colour: string) => void;
   onToggleVoucher: () => void;
   onAddToCart: () => void;
+  onOneClickBuy: () => void;
   onUpdateCartQty: (delta: number) => void;
   onOpenDetail: () => void;
 }
@@ -33,6 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onSelectColour,
   onToggleVoucher,
   onAddToCart,
+  onOneClickBuy,
   onUpdateCartQty,
   onOpenDetail,
 }) => {
@@ -352,53 +354,75 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
-        {/* Bottom Primary Action: Amazon Yellow Add to Cart / Inline Stepper */}
-        <div className="pt-1 flex items-center gap-2 flex-wrap">
-          {cartQuantity === 0 ? (
-            <button
-              type="button"
-              onClick={onAddToCart}
-              className="px-4 py-[7px] rounded-full bg-[#FFD814] hover:bg-[#F7CA00] active:bg-[#F0B800] border border-[#FCD200] text-[13px] font-medium text-[#0F1111] shadow-[0_1px_2px_rgba(15,17,17,0.08)] transition-colors whitespace-nowrap"
-            >
-              Add to cart
-            </button>
-          ) : (
-            <div className="inline-flex items-center rounded-full border-[2px] border-[#FFD814] bg-white overflow-hidden shadow-[0_1px_2px_rgba(15,17,17,0.08)]">
+        {/* Bottom Primary Actions: Add to Cart + Buy now with 1-Click directly below */}
+        <div
+          className={`pt-1.5 flex flex-col gap-2 ${
+            isList ? 'items-start' : 'items-stretch'
+          }`}
+        >
+          <div className="flex items-center gap-2 flex-wrap">
+            {cartQuantity === 0 ? (
               <button
                 type="button"
-                onClick={() => onUpdateCartQty(-1)}
-                aria-label={cartQuantity === 1 ? 'Remove from cart' : 'Decrease quantity'}
-                className="w-8 h-[30px] flex items-center justify-center hover:bg-[#F7F8F8] text-[#0F1111] transition-colors"
+                onClick={onAddToCart}
+                className={`${
+                  isList ? 'w-[184px]' : 'w-full'
+                } px-4 py-[7px] rounded-full bg-[#FFD814] hover:bg-[#F7CA00] active:bg-[#F0B800] border border-[#FCD200] text-[13px] font-medium text-[#0F1111] shadow-[0_1px_2px_rgba(15,17,17,0.08)] transition-colors whitespace-nowrap`}
               >
-                {cartQuantity === 1 ? (
-                  <Trash2 className="w-3.5 h-3.5" />
-                ) : (
-                  <Minus className="w-3.5 h-3.5" />
-                )}
+                Add to cart
               </button>
-              <span className="px-2.5 text-[13px] font-bold text-[#0F1111] tabular-nums select-none">
-                {cartQuantity}
-              </span>
-              <button
-                type="button"
-                onClick={() => onUpdateCartQty(1)}
-                aria-label="Increase quantity"
-                className="w-8 h-[30px] flex items-center justify-center hover:bg-[#F7F8F8] text-[#0F1111] transition-colors"
+            ) : (
+              <div
+                className={`${
+                  isList ? 'w-[184px]' : 'w-full'
+                } inline-flex items-center justify-between rounded-full border-[2px] border-[#FFD814] bg-white overflow-hidden shadow-[0_1px_2px_rgba(15,17,17,0.08)]`}
               >
-                <Plus className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
+                <button
+                  type="button"
+                  onClick={() => onUpdateCartQty(-1)}
+                  aria-label={cartQuantity === 1 ? 'Remove from cart' : 'Decrease quantity'}
+                  className="w-10 h-[30px] flex items-center justify-center hover:bg-[#F7F8F8] text-[#0F1111] transition-colors"
+                >
+                  {cartQuantity === 1 ? (
+                    <Trash2 className="w-3.5 h-3.5" />
+                  ) : (
+                    <Minus className="w-3.5 h-3.5" />
+                  )}
+                </button>
+                <span className="px-2.5 text-[13px] font-bold text-[#0F1111] tabular-nums select-none">
+                  {cartQuantity} in cart
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onUpdateCartQty(1)}
+                  aria-label="Increase quantity"
+                  className="w-10 h-[30px] flex items-center justify-center hover:bg-[#F7F8F8] text-[#0F1111] transition-colors"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
 
-          {isList && (
-            <button
-              type="button"
-              onClick={onOpenDetail}
-              className="text-[12px] text-[#007185] hover:text-[#C7511F] hover:underline ml-1"
-            >
-              Quick view details
-            </button>
-          )}
+            {isList && (
+              <button
+                type="button"
+                onClick={onOpenDetail}
+                className="text-[12px] text-[#007185] hover:text-[#C7511F] hover:underline ml-1"
+              >
+                Quick view details
+              </button>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={onOneClickBuy}
+            className={`${
+              isList ? 'w-[184px]' : 'w-full'
+            } px-4 py-[7px] rounded-full bg-[#FFA41C] hover:bg-[#FA8900] active:bg-[#E77600] border border-[#FF8F00] text-[13px] font-medium text-[#0F1111] shadow-[0_1px_2px_rgba(15,17,17,0.08)] transition-colors whitespace-nowrap`}
+          >
+            Buy now with 1-Click
+          </button>
         </div>
       </div>
     </article>

@@ -392,9 +392,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <button
                   type="button"
                   onClick={() => onBuyNow(qty)}
-                  className="w-full py-2 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[13px] font-medium text-[#0F1111] shadow-[0_1px_2px_rgba(15,17,17,0.1)] transition-colors"
+                  className="w-full py-2 px-4 rounded-full bg-[#FFA41C] hover:bg-[#FA8900] border border-[#FF8F00] text-[13px] font-medium text-[#0F1111] shadow-[0_1px_2px_rgba(15,17,17,0.1)] transition-colors whitespace-nowrap"
                 >
-                  Buy Now
+                  Buy now with 1-Click
                 </button>
               </div>
 

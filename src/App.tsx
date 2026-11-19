@@ -26,6 +26,7 @@ import { ProductDetailModal } from './components/ProductDetailModal';
 import { CartDrawer } from './components/CartDrawer';
 import { LocationModal } from './components/LocationModal';
 import { AllMenuDrawer } from './components/AllMenuDrawer';
+import { OneClickModal, OneClickOrder } from './components/OneClickModal';
 import { Footer } from './components/Footer';
 
 const PAGE_SIZE = 12;
@@ -54,6 +55,7 @@ export default function App() {
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isAllMenuOpen, setIsAllMenuOpen] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [oneClickOrder, setOneClickOrder] = useState<OneClickOrder | null>(null);
   const [deliveryLocation, setDeliveryLocation] = useState({
     label: 'Singapore',
     postalCode: '',
@@ -714,6 +716,26 @@ export default function App() {
                         });
                       }}
                       onAddToCart={() => handleAddToCart(product, 1)}
+                      onOneClickBuy={() => {
+                        const voucherApplied = !!appliedVouchers[product.id];
+                        const unitDiscount =
+                          voucherApplied && product.voucher
+                            ? product.voucher.type === 'percent'
+                              ? product.price * (product.voucher.value / 100)
+                              : product.voucher.value
+                            : 0;
+                        const finalUnit = Math.max(0, product.price - unitDiscount);
+                        const rand = Math.floor(1000000 + Math.random() * 9000000);
+                        setOneClickOrder({
+                          orderNumber: `408-${rand}-1902641`,
+                          product,
+                          colour: selectedColour,
+                          quantity: 1,
+                          unitPrice: finalUnit,
+                          voucherSavings: unitDiscount,
+                          total: finalUnit,
+                        });
+                      }}
                       onUpdateCartQty={(delta) =>
                         handleUpdateCartQty(product.id, selectedColour, delta)
                       }
@@ -929,9 +951,29 @@ export default function App() {
         }}
         onBuyNow={(qty) => {
           if (!activeProduct) return;
-          handleAddToCart(activeProduct, qty);
+          const colour =
+            selectedColours[activeProduct.id] ??
+            activeProduct.colours[0]?.name ??
+            'Default';
+          const voucherApplied = !!appliedVouchers[activeProduct.id];
+          const unitDiscount =
+            voucherApplied && activeProduct.voucher
+              ? activeProduct.voucher.type === 'percent'
+                ? activeProduct.price * (activeProduct.voucher.value / 100)
+                : activeProduct.voucher.value
+              : 0;
+          const finalUnit = Math.max(0, activeProduct.price - unitDiscount);
+          const rand = Math.floor(1000000 + Math.random() * 9000000);
           setActiveProductId(null);
-          setIsCartOpen(true);
+          setOneClickOrder({
+            orderNumber: `408-${rand}-1902641`,
+            product: activeProduct,
+            colour,
+            quantity: qty,
+            unitPrice: finalUnit,
+            voucherSavings: unitDiscount * qty,
+            total: finalUnit * qty,
+          });
         }}
         onFilterBrand={(brand) => updateFilters({ brands: [brand] })}
       />
@@ -972,6 +1014,18 @@ export default function App() {
         isOpen={isAllMenuOpen}
         onClose={() => setIsAllMenuOpen(false)}
         onSelectFilter={handleQuickNavFilter}
+      />
+
+      {/* 1-Click Instant Order Confirmation Modal */}
+      <OneClickModal
+        order={oneClickOrder}
+        deliveryLocation={deliveryLocation}
+        onClose={() => setOneClickOrder(null)}
+        onCancelOrder={() => {
+          const canceledBrand = oneClickOrder?.product.brand ?? 'item';
+          setOneClickOrder(null);
+          showToast(`1-Click order for ${canceledBrand} cancelled`);
+        }}
       />
 
       {/* Non-intrusive Cart / Action Toast */}
