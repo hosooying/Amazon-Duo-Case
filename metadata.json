@@ -1,0 +1,6 @@
+{
+  "name": "Amazon.sg : iphone duo case",
+  "description": "Amazon.sg search results experience for iPhone Duo cases — featuring hinge-protection armor, MagSafe shells, ultra-thin aramid covers, Singapore Prime delivery filters, and interactive shopping cart.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

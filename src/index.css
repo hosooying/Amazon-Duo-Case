@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-amazon: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --amazon-navy: #131921;
+    --amazon-slate: #232f3e;
+    --amazon-ink: #0f1111;
+    --amazon-muted: #565959;
+    --amazon-link: #007185;
+    --amazon-link-hover: #c7511f;
+    --amazon-orange: #ff9900;
+    --amazon-yellow: #ffd814;
+    --amazon-yellow-hover: #f7ca00;
+    --amazon-deal-red: #cc0c39;
+    --amazon-star: #de7921;
+    --amazon-prime: #00a8e1;
+  }
+
+  html {
+    font-family: var(--font-amazon);
+    color: var(--amazon-ink);
+    background-color: #ffffff;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  button:not(:disabled),
+  a[href],
+  select,
+  input[type='checkbox'],
+  input[type='radio'] {
+    cursor: pointer;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom subtle scrollbars for filter sidebar & drawers */
+.amazon-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.amazon-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.amazon-scroll::-webkit-scrollbar-thumb {
+  background: #d5d9d9;
+  border-radius: 3px;
+}
+.amazon-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a6adad;
+}
+
+/* Authentic Amazon slanted corner ribbon clip */
+.amazon-ribbon-cut {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
